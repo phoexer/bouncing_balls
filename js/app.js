@@ -7,29 +7,32 @@ import { drawCircle, redrawBackground } from './shapes.js'
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas')
     const canvasContext = canvas.getContext('2d')
-    let color = 'white'
 
-    let coordinates = {
-        x: randomInt(BALL_RADIUS, CANVAS_WIDTH - BALL_RADIUS),
-        y: randomInt(BALL_RADIUS, CANVAS_HEIGHT - BALL_RADIUS)
+    let balls = []
+    for (let i = 0; i < 100; i++){
+        const ball = {
+            coordinates: {
+                x: randomInt(BALL_RADIUS, CANVAS_WIDTH - BALL_RADIUS),
+                y: randomInt(BALL_RADIUS, CANVAS_HEIGHT - BALL_RADIUS)
+            },
+            speed: {
+                x: randomInt(-5, 5),
+                y: randomInt(-5, 5)
+            },
+            color: randomColor()
+        }
+        balls.push(ball)
     }
-    let speed = {x: 1, y: 2}
-
 
     setInterval(() => {
-        const {
-            coordinates: newCoordinates,
-            speed: newSpeed
-        } = updateBall(coordinates, speed)
-
-        if (newSpeed.x !== speed.x || newSpeed.y !== speed.y) {
-            color = randomColor()
-        }
-
         redrawBackground(canvasContext)
-        coordinates = {...newCoordinates}
+        balls = balls.map((ball)=>{
+            const {coordinates, speed} = updateBall(ball.coordinates, ball.speed)
+            const changeColor = speed.x !== ball.speed.x || speed.y !== ball.speed.y
+            let color = changeColor ? randomColor() : ball.color
 
-        speed = {...newSpeed}
-        drawCircle(canvasContext, coordinates, undefined,color)
+            drawCircle(canvasContext, coordinates, undefined, ball.color)
+            return {coordinates, speed, color}
+        })
     }, 1000 / FRAMES_PER_SECOND)
 }
