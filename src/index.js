@@ -1,7 +1,7 @@
-import { updateBall } from './ball.js'
-import { BALL_RADIUS, CANVAS_HEIGHT, CANVAS_WIDTH, FRAMES_PER_SECOND } from './constants.js'
-import { randomInt, randomColor } from './utils.js'
-import { drawCircle, redrawBackground } from './shapes.js'
+import { updateBall } from './js/ball.js'
+import { BALL_RADIUS, CANVAS_HEIGHT, CANVAS_WIDTH, FRAMES_PER_SECOND } from './js/constants.js'
+import { randomInt, randomColor } from './js/utils.js'
+import { drawCircle, redrawBackground } from './js/shapes.js'
 
 window.onload = () => {
   const canvas = document.getElementById('gameCanvas')
