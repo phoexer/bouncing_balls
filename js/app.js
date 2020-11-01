@@ -1,18 +1,20 @@
 import { updateBall } from './ball.js'
 import { BALL_RADIUS, CANVAS_HEIGHT, CANVAS_WIDTH, FRAMES_PER_SECOND } from "./constants.js";
-import { randomInt } from "./utils.js";
+import { randomInt, randomColor } from "./utils.js";
 import { drawCircle, redrawBackground } from './shapes.js'
 
 
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas')
     const canvasContext = canvas.getContext('2d')
-    const colors = ['blue','white','yellow','red','purple']
+    let color = 'white'
+
     let coordinates = {
         x: randomInt(BALL_RADIUS, CANVAS_WIDTH - BALL_RADIUS),
         y: randomInt(BALL_RADIUS, CANVAS_HEIGHT - BALL_RADIUS)
     }
     let speed = {x: 1, y: 2}
+
 
     setInterval(() => {
         const {
@@ -20,10 +22,14 @@ window.onload = () => {
             speed: newSpeed
         } = updateBall(coordinates, speed)
 
-        coordinates = {...newCoordinates}
-        speed = {...newSpeed}
+        if (newSpeed.x !== speed.x || newSpeed.y !== speed.y) {
+            color = randomColor()
+        }
 
         redrawBackground(canvasContext)
-        drawCircle(canvasContext, coordinates, colors[randomInt(0, colors.length)])
+        coordinates = {...newCoordinates}
+
+        speed = {...newSpeed}
+        drawCircle(canvasContext, coordinates, undefined,color)
     }, 1000 / FRAMES_PER_SECOND)
 }
